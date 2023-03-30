@@ -103,6 +103,10 @@
         /// <returns>The string containing all the array's values</returns>
         public static string IntArrToString(int[] arr)
         {
+            if (arr == null || arr.Length == 0)
+            {
+                return "()";
+            }
             var output = "(";
             foreach (var i in arr)
                 output += i + ", ";
@@ -122,6 +126,28 @@
             for (var i = 0; i < num; i++)
                 output += "   ";
             return output;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="cities"></param>
+        /// <returns></returns>
+        public static string DetailedCities(KeyValuePair<int, int>[] cities)
+        {
+            var output = "";
+
+            if (cities == null || cities.Length == 0)
+            {
+                return output;
+            }
+
+            for (var i = 0; i < cities.Length; i++)
+            {
+                output += "City " + i + ": " + cities[i].Key + " " + cities[i].Value + "\n";
+            }
+
+            return output[..^1];
         }
     }
 }

@@ -42,12 +42,14 @@ namespace GeneticAlgorithm.TravelingSalesman
         public double TotalDistance(int[] order)
         {
             var output = 0.0;
-
-            for (var i = 0; i < order.Length-1; i++)
+            if (order != null && order.Length != 0)
             {
-                var tempX = _cities[order[i]].Key - _cities[order[i + 1]].Key;
-                var tempY = _cities[order[i]].Value - _cities[order[i + 1]].Value;
-                output += Math.Sqrt(Math.Pow(tempX,2) + Math.Pow(tempY,2));
+                for (var i = 0; i < order.Length - 1; i++)
+                {
+                    var tempX = _cities[order[i]].Key - _cities[order[i + 1]].Key;
+                    var tempY = _cities[order[i]].Value - _cities[order[i + 1]].Value;
+                    output += Math.Sqrt(Math.Pow(tempX, 2) + Math.Pow(tempY, 2));
+                }
             }
 
             return output;
@@ -153,14 +155,7 @@ namespace GeneticAlgorithm.TravelingSalesman
 
         public string DetailedCities()
         {
-            var output = "";
-
-            for (var i = 0; i < numCities; i++)
-            {
-                output += "City " + i + ": " + _cities[i].Key + " " + _cities[i].Value + "\n";
-            }
-
-            return output[..^1];
+            return Utils.DetailedCities(_cities);
         }
     }
 }
