@@ -1,22 +1,34 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using GeneticAlgorithm.TravelingSalesman;
+using Xunit;
+using Assert = Xunit.Assert;
 
-namespace SmallestSquareTests.TravellingSalesman
+namespace GeneticAlgorithmTests.TravellingSalesman
 {
-    [TestClass]
     public class CitiesManagerTest
     {
-        [TestMethod]
-        public void TotalDistanceStandardInput()
+        public class TotalDistanceInputs : TheoryData<KeyValuePair<int, int>[], double>
         {
-            KeyValuePair<int, int>[] cities = new KeyValuePair<int, int>[5];
-            cities[0] = new KeyValuePair<int, int>(0, 0);
-            cities[1] = new KeyValuePair<int, int>(1, 1);
-            cities[2] = new KeyValuePair<int, int>(2, 2);
-            cities[3] = new KeyValuePair<int, int>(3, 3);
-            cities[4] = new KeyValuePair<int, int>(4, 4);
-            
+            public TotalDistanceInputs()
+            {
+                CitiesBuilder citiesBuilder = new();
+                citiesBuilder.Add(0, 0);
+                citiesBuilder.Add(1, 1);
+                citiesBuilder.Add(2, 2);
+                citiesBuilder.Add(3, 3);
+                citiesBuilder.Add(4, 4);
+                Add(citiesBuilder.Construct(), Math.Sqrt(32));
+
+                citiesBuilder = new();
+                Add(citiesBuilder.Construct(), 0.0);
+            }
+        }
+
+        [Theory]
+        [ClassData(typeof(TotalDistanceInputs))]
+        public void TotalDistanceStandardInput(KeyValuePair<int, int>[] cities, double expectedValue)
+        {            
             int[] order = new int[cities.Length];
             for (int i = 0; i < order.Length; i++)
             {
@@ -24,15 +36,13 @@ namespace SmallestSquareTests.TravellingSalesman
             }
 
             CitiesManager cm = new(cities);
-            double actualScore = cm.TotalDistance(order);
+            double actualValue = cm.TotalDistance(order);
 
-            double expectedScore = Math.Sqrt(32);
-
-            Assert.AreEqual(expectedScore, actualScore);
+            Assert.Equal(expectedValue, actualValue);
         }
 
 
-        [TestMethod]
+        [Fact]
         public void BestOrderStandardInput()
         {
             KeyValuePair<int, int>[] cities = new KeyValuePair<int, int>[5];
@@ -55,8 +65,8 @@ namespace SmallestSquareTests.TravellingSalesman
                 expectedOrder[i] = i;
             }
 
-            Assert.IsNotNull(bestSolution);
-            Assert.IsNotNull(bestScore);
+            Assert.NotNull(bestSolution);
+            Assert.NotNull(bestScore);
 
             int numCorrect = expectedOrder.Where((b, i) => b == bestSolution[i]).Count();
 
@@ -73,9 +83,9 @@ namespace SmallestSquareTests.TravellingSalesman
                 Console.Write(", " + bestSolution[i]);
             }
 
-            Assert.AreEqual(120, cm.numPermutations);
-            Assert.AreEqual(expectedScore, bestScore);
-            Assert.AreEqual(expectedOrder.Length, numCorrect);
+            Assert.Equal(120, cm.numPermutations);
+            Assert.Equal(expectedScore, bestScore);
+            Assert.Equal(expectedOrder.Length, numCorrect);
         }
     }
 }

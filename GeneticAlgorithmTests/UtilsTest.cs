@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GeneticAlgorithm;
 using static GeneticAlgorithm.Utils;
 
-namespace SmallestSquareTests
+namespace GeneticAlgorithmTests
 {
     [TestClass]
     public class UtilsTest
